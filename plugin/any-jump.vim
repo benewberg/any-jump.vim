@@ -123,6 +123,9 @@ call s:set_plugin_global_option('any_jump_search_prefered_engine', 'rg')
 " Disable default keybindinngs for commands
 call s:set_plugin_global_option('any_jump_disable_default_keybindings', v:false)
 
+" Any-jump neovim minimal window style
+call s:set_plugin_global_option('any_jump_window_style_minimal', v:false)
+
 " Any-jump window size & position options
 call s:set_plugin_global_option('any_jump_window_width_ratio', str2float('0.6'))
 call s:set_plugin_global_option('any_jump_window_height_ratio', str2float('0.6'))
@@ -203,13 +206,18 @@ fu! s:CreateNvimUi(internal_buffer) abort
   let width      = float2nr(&columns * g:any_jump_window_width_ratio)
   let horizontal = float2nr((&columns - width) / 2)
   let vertical   = g:any_jump_window_top_offset
+  let style      = ''
+  if g:any_jump_window_style_minimal == v:true
+    let style    = 'minimal'
+  endif
 
   let opts = {
         \ 'relative': 'editor',
         \ 'row': vertical,
         \ 'col': horizontal,
         \ 'width': width,
-        \ 'height': height
+        \ 'height': height,
+        \ 'style': style
         \ }
 
   let winid = nvim_open_win(buf, v:true, opts)
